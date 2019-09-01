@@ -47,12 +47,12 @@ class ImageUpload extends Component {
       data.append('file', this.dataURItoBlob(this.state.cropped));
       data.append('filename', this.state.imageName);
 
-      fetch('http://127.0.0.1:5000/api/upload', {
+      fetch('http://127.0.0.1:5000/api/post', {
         method: 'POST',
         body: data,
       }).then((response) => {
         response.json().then((body) => {
-          this.setState({ imageURL: `http://127.0.0.1:5000/${body.file}` });
+          console.log(body);
         });
       });
     } else {
