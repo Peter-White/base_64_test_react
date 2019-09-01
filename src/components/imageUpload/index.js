@@ -12,7 +12,8 @@ class ImageUpload extends Component {
       imageName: "",
       imageType: "",
       image: "",
-      cropped: ""
+      cropped: "",
+      imgClass: "empty"
     }
   }
 
@@ -36,6 +37,7 @@ class ImageUpload extends Component {
               console.log(error); //Exepection error....
           }
       )
+      this.setState({imgClass: "empty"});
   }
 
   setImage = async(e) => {
@@ -88,31 +90,48 @@ class ImageUpload extends Component {
     this.setState({cropped: this.refs.cropper.getCroppedCanvas().toDataURL()});
   }
 
+  onDragEnter = () => {
+    this.setState({imgClass: "full"});
+  }
+
+  onDragLeave = () => {
+    this.setState({imgClass: "empty"});
+  }
+
+  onDropRejected = () => {
+    console.log("Not an image");
+    this.setState({imgClass: "empty"});
+  }
+
   render() {
     return (
-      <div className="container">
+      <div className="container" ref="thing">
         <div className="row">
           <div className="col-md-4 offset-md-4">
             <form onSubmit={this.setImage}>
               <div className="form-group">
-                <Dropzone
-                  onDrop={this.readImage.bind(this)}
-                  accept="image/*"
-                  multiple={false}>
-                  {({getRootProps, getInputProps}) => {
-                    return (
-                      <div
-                      {...getRootProps()}
-                      >
-                      <input {...getInputProps()} />
-                      {
-                        <p>Try dropping some files here, or click to select files to upload.</p>
-                      }
-                      </div>
-                    )
-                  }}
-                </Dropzone>
-                <input type="file" className="form-control-file" id="exampleFormControlFile1" onChange={this.readImage} />
+                <div className={this.state.imgClass} id="img-select">
+                  <Dropzone
+                    onDropAccepted={this.readImage.bind(this)}
+                    onDropRejected={this.onDropRejected}
+                    accept="image/*"
+                    onDragEnter={this.onDragEnter}
+                    onDragLeave={this.onDragLeave}
+                    multiple={false}>
+                    {({getRootProps, getInputProps}) => {
+                      return (
+                        <div
+                        {...getRootProps()}
+                        >
+                        <input {...getInputProps()} />
+                        {
+                          <p>Try dropping some files here, or click to select files to upload.</p>
+                        }
+                        </div>
+                      )
+                    }}
+                  </Dropzone>
+                </div>
               </div>
               <div className="form-group">
                 <Cropper ref='cropper' src={this.state.image} zoomable={false} viewMode={0} aspectRatio={1} background={false} autoCropArea={0.5} crop={this._crop.bind(this)} />

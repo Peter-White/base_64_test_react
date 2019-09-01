@@ -1,3 +1,18 @@
 .container {
   margin: 5%;
 }
+
+#img-select {
+  border-style: dashed;
+  padding: 5%;
+}
+
+.empty {
+  background-color: rgb(242, 242, 242);
+  border-color: rgb(204, 204, 204);
+}
+
+.full {
+    background-color: rgb(179, 179, 179);
+    border-color: rgb(128, 128, 128);
+}
