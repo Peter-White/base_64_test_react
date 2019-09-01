@@ -52,7 +52,7 @@ class ImageUpload extends Component {
         body: data,
       }).then((response) => {
         response.json().then((body) => {
-          console.log(body);
+          this.props.setImage(`data:image/png;base64, ${body.image}`);
         });
       });
     } else {
