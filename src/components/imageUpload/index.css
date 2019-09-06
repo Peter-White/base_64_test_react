@@ -7,6 +7,10 @@
   padding: 5%;
 }
 
+img {
+  max-width: 100%; /* This rule is very important, please do not ignore this! */
+}
+
 .empty {
   background-color: rgb(242, 242, 242);
   border-color: rgb(204, 204, 204);
@@ -15,4 +19,12 @@
 .full {
     background-color: rgb(179, 179, 179);
     border-color: rgb(128, 128, 128);
+}
+
+.error {
+  color: red;
+}
+
+.img-container {
+    max-height: 200px;
 }
