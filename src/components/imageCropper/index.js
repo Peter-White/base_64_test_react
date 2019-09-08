@@ -44,8 +44,18 @@ class ImageCropper extends Component {
   render() {
     return(
       <div className="col-md-8 offset-md-4">
-        <div className="img-container">
-          <Cropper ref='cropper' src={this.props.image} zoomable={false} viewMode={2} aspectRatio={1/1} autoCropArea={0.1} background={false} autoCropArea={0.5} crop={this._crop.bind(this)} />
+        <div className="row">
+          <div className="img-container">
+            <Cropper ref='cropper' src={this.props.image} zoomable={false} viewMode={2} aspectRatio={1/1} background={false} autoCropArea={0.5} crop={this._crop.bind(this)} />
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-md-6" id="btn-group">
+            <button type="button" id="cancel" class="btn btn-success btn-block">Cancel</button>
+          </div>
+          <div className="col-md-6" id="btn-group">
+            <button type="button" id="submit" class="btn btn-danger btn-block">Submit</button>
+          </div>
         </div>
       </div>
     );

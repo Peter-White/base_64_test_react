@@ -1,3 +1,24 @@
 img {
   max-width: 100%; /* This rule is very important, please do not ignore this! */
 }
+
+button#cancel {
+  display: block;
+  width: 100%;
+}
+
+.cropper-crop-box {
+  background-color: white;
+}
+
+.img-container {
+  margin: 0 auto;
+}
+
+div#btn-group {
+  padding: 0;
+}
+
+#cancel, #submit {
+  border-radius: 0;
+}
