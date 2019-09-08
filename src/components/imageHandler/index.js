@@ -28,10 +28,14 @@ class ImageHandler extends Component {
   }
 
   setImage = (image) => {
-    this.setState({image: image})
+    this.setState({image: image});
   }
 
-  setImage = async(e) => {
+  cancelImage = () => {
+    this.setState({image: ""})
+  }
+
+  submitImage = async(e) => {
     e.preventDefault();
     if(this.state.cropped !== "") {
       const data = new FormData();
@@ -44,7 +48,7 @@ class ImageHandler extends Component {
         body: data,
       }).then((response) => {
         response.json().then((body) => {
-          this.props.setImage(`data:image/png;base64, ${body.image}`);
+          this.setImage(`data:image/png;base64, ${body.image}`);
         });
       });
     } else {
@@ -82,7 +86,7 @@ class ImageHandler extends Component {
     if (this.state.image === "") {
       option = <ImageDropper setImage={this.setImage} readImage={this.readImage} />;
     } else {
-      option = <ImageCropper image={this.state.image} />;
+      option = <ImageCropper image={this.state.image} cancelImage={this.cancelImage} submitImage={this.submitImage} />;
     }
 
     return (

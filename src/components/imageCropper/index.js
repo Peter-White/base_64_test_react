@@ -51,10 +51,10 @@ class ImageCropper extends Component {
         </div>
         <div className="row">
           <div className="col-md-6" id="btn-group">
-            <button type="button" id="cancel" class="btn btn-success btn-block">Cancel</button>
+            <button type="button" id="cancel" className="btn btn-danger btn-block" onClick={this.props.cancelImage}>Cancel</button>
           </div>
           <div className="col-md-6" id="btn-group">
-            <button type="button" id="submit" class="btn btn-danger btn-block">Submit</button>
+            <button type="button" id="submit" className="btn btn-success btn-block">Submit</button>
           </div>
         </div>
       </div>
