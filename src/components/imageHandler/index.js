@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ImageDropper from '../imageDropper';
+import ImageCropper from '../imageCropper';
 import './index.css';
 
 class ImageHandler extends Component {
@@ -9,9 +10,9 @@ class ImageHandler extends Component {
     this.state = {
       imageName: "",
       imageType: "",
+      imageInDB: "",
       image: "",
-      cropped: "",
-      imgClass: ""
+      cropped: ""
     }
   }
 
@@ -23,7 +24,7 @@ class ImageHandler extends Component {
       }
     })
     .then(response => response.json())
-    .then(data => this.setState({image: `data:image/png;base64, ${data["image"]}`}));
+    .then(data => this.setState({imageInDB: `data:image/png;base64, ${data["image"]}`}));
   }
 
   setImage = (image) => {
@@ -76,16 +77,22 @@ class ImageHandler extends Component {
   }
 
   render() {
+    let option;
+
+    if (this.state.image === "") {
+      option = <ImageDropper setImage={this.setImage} readImage={this.readImage} />;
+    } else {
+      option = <ImageCropper image={this.state.image} />;
+    }
+
     return (
       <div className="container">
         <div className="row">
-          <ImageDropper setImage={this.setImage} readImage={this.readImage} />
-        </div>
-        <div className="row">
+          {option}
         </div>
         <div className="row">
           <div className="col-md-8 offset-md-4">
-            <img src={this.state.image} />
+            <img src={this.state.imageInDB} />
           </div>
         </div>
       </div>

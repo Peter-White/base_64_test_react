@@ -5,8 +5,9 @@ import './index.css';
 
 class ImageCropper extends Component {
   constructor() {
+    super();
+
     this.state = {
-      image: "",
       cropped: ""
     }
   }
@@ -44,7 +45,7 @@ class ImageCropper extends Component {
     return(
       <div className="col-md-8 offset-md-4">
         <div className="img-container">
-          <Cropper ref='cropper' src={this.state.image} zoomable={false} viewMode={2} aspectRatio={1/1} autoCropArea={0.1} background={false} autoCropArea={0.5} crop={this._crop.bind(this)} />
+          <Cropper ref='cropper' src={this.props.image} zoomable={false} viewMode={2} aspectRatio={1/1} autoCropArea={0.1} background={false} autoCropArea={0.5} crop={this._crop.bind(this)} />
         </div>
       </div>
     );
