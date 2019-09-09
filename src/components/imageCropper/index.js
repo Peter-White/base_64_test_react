@@ -8,32 +8,14 @@ class ImageCropper extends Component {
     super();
 
     this.state = {
-      cropped: ""
+      cropped: "",
+      overlay: "hide"
     }
   }
 
-  dataURItoBlob = (dataURI) => {
-    // convert base64 to raw binary data held in a string
-    // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
-    var byteString = atob(dataURI.split(',')[1]);
-
-    // separate out the mime component
-    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
-
-    // write the bytes of the string to an ArrayBuffer
-    var ab = new ArrayBuffer(byteString.length);
-
-    // create a view into the buffer
-    var ia = new Uint8Array(ab);
-
-    // set the bytes of the buffer to the correct values
-    for (var i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i);
-    }
-
-    // write the ArrayBuffer to a blob, and you're done
-    var blob = new Blob([ab], {type: mimeString});
-    return blob;
+  submitImage = (e) => {
+    e.preventDefault();
+    this.props.postImage(this.state.cropped);
   }
 
   _crop(){
@@ -41,20 +23,37 @@ class ImageCropper extends Component {
     this.setState({cropped: this.refs.cropper.getCroppedCanvas().toDataURL()});
   }
 
+  showPreview = () => {
+    // const cropper = this.refs.cropper;
+    //
+    // let cropped = cropper.getCroppedCanvas();
+    //
+    // console.log(cropped);
+    this.setState({overlay: "show"});
+  }
+
+  hidePreview = () => {
+    this.setState({overlay: "hide"});
+  }
+
   render() {
     return(
       <div className="col-md-8 offset-md-4">
+        <div onClick={this.hidePreview} className={this.state.overlay} id="overlay"></div>
         <div className="row">
           <div className="img-container">
             <Cropper ref='cropper' src={this.props.image} zoomable={false} viewMode={2} aspectRatio={1/1} background={false} autoCropArea={0.5} crop={this._crop.bind(this)} />
           </div>
         </div>
         <div className="row">
-          <div className="col-md-6" id="btn-group">
+          <div className="col-md-4" id="btn-group">
             <button type="button" id="cancel" className="btn btn-danger btn-block" onClick={this.props.cancelImage}>Cancel</button>
           </div>
-          <div className="col-md-6" id="btn-group">
-            <button type="button" id="submit" className="btn btn-success btn-block">Submit</button>
+          <div className="col-md-4" id="btn-group">
+            <button type="button" id="preview" className="btn btn-primary btn-block" onClick={this.showPreview}>Preview</button>
+          </div>
+          <div className="col-md-4" id="btn-group">
+            <button type="button" id="submit" onClick={this.submitImage} className="btn btn-success btn-block">Submit</button>
           </div>
         </div>
       </div>

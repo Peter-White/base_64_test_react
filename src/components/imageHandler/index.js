@@ -27,19 +27,42 @@ class ImageHandler extends Component {
     .then(data => this.setState({imageInDB: `data:image/png;base64, ${data["image"]}`}));
   }
 
+  dataURItoBlob = (dataURI) => {
+    // convert base64 to raw binary data held in a string
+    // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+    var byteString = atob(dataURI.split(',')[1]);
+
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+
+    // write the bytes of the string to an ArrayBuffer
+    var ab = new ArrayBuffer(byteString.length);
+
+    // create a view into the buffer
+    var ia = new Uint8Array(ab);
+
+    // set the bytes of the buffer to the correct values
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+
+    // write the ArrayBuffer to a blob, and you're done
+    var blob = new Blob([ab], {type: mimeString});
+    return blob;
+  }
+
   setImage = (image) => {
-    this.setState({image: image});
+    this.setState({imageInDB: image});
   }
 
   cancelImage = () => {
     this.setState({image: ""})
   }
 
-  submitImage = async(e) => {
-    e.preventDefault();
-    if(this.state.cropped !== "") {
+  postImage = async(cropped) => {
+    if(cropped !== "") {
       const data = new FormData();
-      data.append('file', this.dataURItoBlob(this.state.cropped));
+      data.append('file', this.dataURItoBlob(cropped));
       data.append('filename', this.state.imageName);
       data.append('filetype', this.state.imageType);
 
@@ -86,7 +109,7 @@ class ImageHandler extends Component {
     if (this.state.image === "") {
       option = <ImageDropper setImage={this.setImage} readImage={this.readImage} />;
     } else {
-      option = <ImageCropper image={this.state.image} cancelImage={this.cancelImage} submitImage={this.submitImage} />;
+      option = <ImageCropper image={this.state.image} cancelImage={this.cancelImage} postImage={this.postImage} />;
     }
 
     return (
