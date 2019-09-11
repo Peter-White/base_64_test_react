@@ -114,9 +114,7 @@ class ImageHandler extends Component {
 
     return (
       <div className="container">
-        <div className="row">
           {option}
-        </div>
         <div className="row">
           <div className="col-md-8 offset-md-4">
             <img src={this.state.imageInDB} />
